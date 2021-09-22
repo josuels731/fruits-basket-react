@@ -1,9 +1,6 @@
 import Header from 'components/Header'
 
-interface HomeProps {
-
-}
-function Home({ }: HomeProps) {
+function Home() {
 
     return <>
         <Header></Header>

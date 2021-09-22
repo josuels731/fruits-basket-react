@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 import Home from "pages/Home";
+import Login from "pages/Login";
 
 interface RouteType {
   path: string;
@@ -26,7 +27,7 @@ const routeList: Array<RouteType> = [
   { // Login
     path: "/login",
     name: "Login",
-    child: null,
+    child: Login,
     subRoutes: [],
     hidden: true
   }
