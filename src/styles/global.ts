@@ -24,6 +24,11 @@ const GlobalStyle = createGlobalStyle`
         -webkit-tap-highlight-color: transparent;
         -moz-osx-font-smoothing: grayscale;
     }
+
+    #root {
+        width: 100vw;
+        height: 100vh;
+    }
 `
 
 export default GlobalStyle
