@@ -20,14 +20,14 @@ const routeList: Array<RouteType> = [
   { // Home
     path: "/",
     name: "Home",
-    child: Home,
+    child: <Home/>,
     subRoutes: [],
     hidden: true
   },
   { // Login
     path: "/login",
     name: "Login",
-    child: Login,
+    child: <Login/>,
     subRoutes: [],
     hidden: true
   }
