@@ -14,15 +14,22 @@ const GlobalStyle = createGlobalStyle`
         box-sizing: border-box;
         overflow: hidden;
         
-        font-family: Maven Pro;
-        font-weight: 500;
+        font-family: 'Lato', sans-serif;
             
-        background-color: #06093E;
+        background-color: #003049;
         color: #FFFFFF;
 
         -webkit-font-smoothing: antialiased;
         -webkit-tap-highlight-color: transparent;
         -moz-osx-font-smoothing: grayscale;
+    }
+
+    button {
+        font-family: 'Lato', sans-serif;
+    }
+
+    input {
+        font-family: 'Lato', sans-serif;
     }
 
     #root {
