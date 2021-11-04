@@ -57,8 +57,8 @@ const CardsCarroussel = ({ cards }: CardsCarrousselProps) => {
     useEffect(() => setPosition(0), [])
 
     const handleScroll = (e: WheelEvent<HTMLDivElement>) => {
-        if ((position < -0.14 && e.deltaY > 0) || (position + cards.length > 5.6 && e.deltaY < 0))
-            setPosition(position + (e.deltaY > 0 ? 1 : -1) * 0.2);
+        if ((position < -0.14 && e.deltaY < 0) || (position + cards.length > 5.6 && e.deltaY > 0))
+            setPosition(position + (e.deltaY < 0 ? 1 : -1) * 0.2);
     }
 
     return <CardsCarrousselWrapper onWheel={handleScroll} >
