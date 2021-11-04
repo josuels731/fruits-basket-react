@@ -24,7 +24,8 @@ interface SearchBarProps {
     style?: CSSProperties
 }
 function SearchBar({ variation, style }: SearchBarProps) {
-
+    // TODO large variation
+    // TODO Add input and search functionalities
     switch (variation) {
         case "large":
             return <>
