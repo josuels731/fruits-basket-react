@@ -3,15 +3,21 @@ import styled from "styled-components";
 import { login } from 'services/users';
 import { RequestPostLogin, ResponsePostLogin } from 'services/users.d';
 import LoginBackground from 'assets/img/LoginBackground.png'
+import { ReactComponent as DefaultIcon } from 'assets/icons/DefaultIcon.svg'
 
 const Page = styled.div`
     width: 100vw;
     height: 100vh;
 
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     background-image: url(${LoginBackground});
+`;
+
+const Icon = styled.div`
+    margin-bottom: 1em;
 `;
 
 const Filter = styled.div`
@@ -113,6 +119,7 @@ function Login() {
     }
 
     return <Page>
+        <Icon><DefaultIcon /></Icon>
         <DesktopForm onSubmit={handleSubmit}>
             <Filter>
                 <Title>Entrar</Title>
