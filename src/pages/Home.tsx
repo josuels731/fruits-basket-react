@@ -1,4 +1,4 @@
-import { ReactChildren, ReactNode, UIEvent as ReactUIEvent, useEffect, useState, WheelEvent } from "react";
+import { useEffect, useState, WheelEvent } from "react";
 import styled from "styled-components";
 
 const Wrapper = styled.div`
