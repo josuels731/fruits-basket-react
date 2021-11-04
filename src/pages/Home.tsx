@@ -16,7 +16,6 @@ const Grid = styled.div`
     height: 80%;
     width: 100%;
 `;
-
 const Row = styled.div`
     width: 100%;
     height: 100%;
@@ -38,7 +37,7 @@ const Card = styled.div<{ position: number }>`
     border-radius: 1em;
     background-color: #476A7C;
     box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.1);
-    transition: left 1s;
+    transition: left 0.5s ease-out;
 `;
 
 const CardsCarrousselWrapper = styled.div`
@@ -75,9 +74,6 @@ function Home() {
             <Row>
                 <div>Continue Assistindo</div>
                 <CardsCarroussel cards={[
-                    {},
-                    {},
-                    {},
                     {},
                     {},
                     {},
