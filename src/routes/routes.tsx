@@ -2,6 +2,7 @@ import { ReactNode } from "react";
 import Home from "pages/Home";
 import Login from "pages/Login";
 import Header from "components/Header";
+import Profile from "pages/Profile";
 
 interface RouteType {
   path: string;
@@ -22,6 +23,13 @@ const routeList: Array<RouteType> = [
     path: "/",
     name: "Home",
     child: <Header><Home /></Header>,
+    subRoutes: [],
+    hidden: true
+  },
+  { // Home
+    path: "/profile",
+    name: "Profile",
+    child: <Header><Profile /></Header>,
     subRoutes: [],
     hidden: true
   },
