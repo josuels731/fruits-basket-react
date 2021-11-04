@@ -13,7 +13,7 @@ const login = async (data: RequestPostLogin): Promise<ResponsePostLogin> => {
 
         return req.data;
     } catch (e: any) {
-        return e;
+        return e.response.data;
     }
 }
 

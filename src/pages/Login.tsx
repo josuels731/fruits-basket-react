@@ -1,7 +1,8 @@
-import { FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, FormEventHandler, useState } from "react";
 import styled from "styled-components";
 import { login } from 'services/users';
 import { RequestPostLogin, ResponsePostLogin } from 'services/users.d';
+import LoginBackground from 'assets/img/LoginBackground.png'
 
 const Page = styled.div`
     width: 100vw;
@@ -10,39 +11,45 @@ const Page = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
+    background-image: url(${LoginBackground});
+`;
 
-    `;
+const Filter = styled.div`
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(1em);
+    display: flex;
+    flex-direction: column;
+`;
 
 const DesktopForm = styled.form`
-    width: 24vw;
+    width: 23vw;
     height: 54vh;
-    border-radius: 0.3em;
+    border-radius: 0.5em;
     background: rgba(255, 255, 255, 0.34);
-    
-    > div {
-        padding: 2vw;
-        width: 20vw;
-        height: 50vh;
-        /* backdrop-filter: blur(22px); */
-        display: flex;
-        flex-direction: column;
-    }
+    overflow: hidden;
 `;
 
 const Title = styled.div`
     font-size: 2em;
+    font-weight: 700;
+    margin: 0 10%;
+    margin-top: 3rem;
     margin-bottom: 4rem;
+
 `;
 
 const Input = styled.input`
-    width: 90%;
+    width: 70%;
     height: 3.5rem;
     border-radius: .5rem;
     border: none;
     outline: none;
-    font-size: 1.2em;
+    font-size: 1.7em;
+    font-weight: 600;
+    margin: 0 10%;
     margin-bottom: 1.5rem;
-    padding: 0 5%;
+    padding: 0.1em 5%;
     color: #3d3d3d;
     
     ::placeholder {
@@ -51,21 +58,37 @@ const Input = styled.input`
 `;
 
 const Button = styled.button`
-    width: 60%;
+    width: 40%;
     height: 3.5rem;
     border-radius: 1.5em;
     border: none;
-    background-color: #F9D44F;
-    color: #FFF;
-    font-size: 1.75em;
+    background-color: #FFF;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+    color: #003049;
+    font-size: 1.7em;
+    font-weight: 900;
     margin: auto;
+    outline: none;
+    transition: transform 50ms, box-shadow 200ms;
+
+    :hover {
+        box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.25);
+    }
+
+    :active {
+        box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.25);
+        transform: translateY(1px);
+    }
 `;
 
 const Error = styled.div`
     border: none;
-    color: #e63e3e;
+    color: #D62828;
+    font-weight: 700;
     font-size: 1em;
-    margin-top: 1em;
+    height: 1.5em;
+    margin-top: 0em;
+    margin-bottom: 1em;
     align-self: center;
 `;
 
@@ -74,26 +97,30 @@ function Login() {
     const [loginData, setLoginData] = useState<RequestPostLogin>({ email: '', password: '' });
     const [loginStatus, setLoginStatus] = useState<ResponsePostLogin>({});
 
-    const submit = async (e: FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        try {
-            const data = await login(loginData);
-            setLoginStatus(data);
-        } catch (e) {
-            console.log((e as { request: any }).request);
-
-            setLoginStatus(e as ResponsePostLogin);
-        }
+        setLoginStatus(await login(loginData));
     }
+
+    const handleInvalid = (e: FormEvent<HTMLInputElement>) => {
+        e.preventDefault();
+        setLoginStatus({ error: 'Email or password is invalid' });
+    }
+
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+        setLoginStatus({});
+        setLoginData({ ...loginData, [e.target.id]: e.target.value })
+    }
+
     return <Page>
-        <DesktopForm onSubmit={submit}>
-            <div>
+        <DesktopForm onSubmit={handleSubmit}>
+            <Filter>
                 <Title>Entrar</Title>
-                <Input onChange={(e) => setLoginData({ ...loginData, email: e.target.value })} type="text" placeholder='email' />
-                <Input onChange={(e) => setLoginData({ ...loginData, password: e.target.value })} type="password" placeholder='senha' />
-                {loginStatus.error ? <Error>Email ou Senha Incorretos</Error> : null}
+                <Input id='email' onInvalid={handleInvalid} onChange={handleChange} type="email" placeholder='email' />
+                <Input id='password' onInvalid={handleInvalid} onChange={handleChange} type="password" placeholder='senha' />
+                <Error>{loginStatus.error || ''}</Error>
                 <Button type="submit">login</Button>
-            </div>
+            </Filter>
         </DesktopForm>
     </Page>
 }
