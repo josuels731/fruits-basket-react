@@ -65,7 +65,7 @@ const Grid = styled.div`
     display: grid;
     grid-template-rows: 1fr 1.4fr;
     grid-template-columns: 1.6fr 1fr;
-    grid-column-gap: 2em;
+    gap: 2em;
     height: 92%;
     width: 90%;
     align-self: flex-end;
@@ -191,11 +191,10 @@ const Watched = styled.div`
         font-weight: 700;
         height: 10%;
         margin-left: 2em;
-        margin-top: 3rem;
     }
     &>:nth-child(2) {
         width: 89vw;
-        height: calc(90% - 3rem);
+        height: 90%;
         overflow: hidden;
         position: relative;
         margin: auto;
@@ -276,22 +275,21 @@ function Profile() {
                     </Following>
                 </Filter>
             </Background>
-            <Watched>
-                <div>Filmes</div>
-                <div onWheel={handleWheel} onTouchStart={handleTouchDown} onTouchEnd={handleTouchUp} onTouchMove={handleTouchMove}>
-                    {moviesList.map((movie, index) =>
-                        <Card
-                            key={index}
-                            focus={position === Math.floor(index / 5)}
-                            positionX={index % 5}
-                            positionY={-position + Math.floor(index / 5)}
-                        >
-                        </Card>
-                    )}
-                </div>
-            </Watched>
             <Background>
-
+                <Watched>
+                    <div>Filmes</div>
+                    <div onWheel={handleWheel} onTouchStart={handleTouchDown} onTouchEnd={handleTouchUp} onTouchMove={handleTouchMove}>
+                        {moviesList.map((movie, index) =>
+                            <Card
+                                key={index}
+                                focus={position === Math.floor(index / 5)}
+                                positionX={index % 5}
+                                positionY={-position + Math.floor(index / 5)}
+                            >
+                            </Card>
+                        )}
+                    </div>
+                </Watched>
             </Background>
         </Grid>
     </Wrapper>
