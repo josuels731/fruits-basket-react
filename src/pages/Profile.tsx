@@ -224,8 +224,14 @@ function Profile() {
 
 
     const handleWheel = (e: WheelEvent<HTMLDivElement>) => {
-        if ((position > 0 && e.deltaY < 0) || (position < (Math.floor(moviesList.length / 5) - 1) && e.deltaY > 0))
-            setPosition(position + (e.deltaY > 0 ? 1 : -1) * 1);
+        if (touchPos > 200 || touchPos < -200) {
+            setTouchPos(0);
+            if ((position > 0 && e.deltaY < 0) || (position < (Math.floor(moviesList.length / 5) - 1) && e.deltaY > 0))
+                setPosition(position + (e.deltaY > 0 ? 1 : -1) * 1);
+
+        } else {
+            setTouchPos(touchPos + e.deltaY)
+        }
     }
     const handleTouchMove = (e: TouchEvent<HTMLDivElement>) => {
         if (position > 0 && e.changedTouches[0].screenY - touchPos > 100) {
