@@ -2,6 +2,13 @@ import { ReactNode } from "react";
 import styled from "styled-components";
 import { ReactComponent as DefaultIcon } from 'assets/icons/DefaultIcon.svg'
 import SearchBar from "./SearchBar";
+import DefaultBackground from 'assets/img/DefaultBackground.png'
+
+const Wrapper = styled.div`
+    height: 100%;
+    width: 100%;
+    background-image: url(${DefaultBackground});
+`;
 
 const HeaderArea = styled.header`
     height: 14%;
@@ -29,8 +36,6 @@ const User = styled.div`
 
 `;
 
-
-
 const ContentArea = styled.div`
     height: 86%;
     width: 100%;
@@ -42,7 +47,7 @@ interface HeaderProps {
 }
 function Header({ children, hideSearchBar }: HeaderProps) {
 
-    return <>
+    return <Wrapper>
         <HeaderArea>
             <Icon><DefaultIcon /></Icon>
             <Option>Marcar um Filme</Option>
@@ -52,7 +57,7 @@ function Header({ children, hideSearchBar }: HeaderProps) {
             <User />
         </HeaderArea>
         <ContentArea children={children} />
-    </>
+    </Wrapper>
 }
 
 export default Header;
