@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { ReactComponent as DefaultIcon } from 'assets/icons/DefaultIcon.svg'
 import SearchBar from "./SearchBar";
 import DefaultBackground from 'assets/img/DefaultBackground.png'
+import { Link } from "react-router-dom";
 
 const Wrapper = styled.div`
     height: 100%;
@@ -26,14 +27,19 @@ const Option = styled.div`
     font-weight: 400;
     margin-left: 2em;
 `;
-const User = styled.div`
+const UserWrapper = styled.div`
     width: 5em;
     height: 5em;
     border-radius: 50%;
     margin-right: 2.5%;
     margin-left: auto;
     background-color: #000;
-
+`;
+const User = styled.div`
+    width: 5em;
+    height: 5em;
+    border-radius: 50%;
+    background-color: #000;
 `;
 
 const ContentArea = styled.div`
@@ -49,12 +55,32 @@ function Header({ children, hideSearchBar }: HeaderProps) {
 
     return <Wrapper>
         <HeaderArea>
-            <Icon><DefaultIcon /></Icon>
-            <Option>Marcar um Filme</Option>
-            <Option>Lançamentos</Option>
-            <Option>Top 10</Option>
+            <Icon>
+                <Link to='/' style={{ textDecoration: "none", color: 'inherit  ' }}>
+                    <DefaultIcon />
+                </Link>
+            </Icon>
+            <Option>
+                <Link to='/movie' style={{ textDecoration: "none", color: 'inherit  ' }}>
+                    Marcar um Filme
+                </Link>
+            </Option>
+            <Option>
+                <Link to='/movie' style={{ textDecoration: "none", color: 'inherit  ' }}>
+                    Lançamentos
+                </Link>
+            </Option>
+            <Option>
+                <Link to='/movie' style={{ textDecoration: "none", color: 'inherit  ' }}>
+                    Top 10
+                </Link>
+            </Option>
             {!hideSearchBar ? <SearchBar style={{ marginLeft: '2em' }} variation='small' /> : null}
-            <User />
+            <UserWrapper>
+                <Link to='/profile'>
+                    <User />
+                </Link>
+            </UserWrapper>
         </HeaderArea>
         <ContentArea children={children} />
     </Wrapper>
