@@ -46,8 +46,11 @@ const CardsCarrousselWrapper = styled.div`
     position: relative;
     overflow: hidden;
 `;
+
+interface CardProps {
+}
 interface CardsCarrousselProps {
-    cards: {}[]
+    cards: CardProps[]
 }
 const CardsCarroussel = ({ cards }: CardsCarrousselProps) => {
 
@@ -68,54 +71,23 @@ const CardsCarroussel = ({ cards }: CardsCarrousselProps) => {
 }
 
 function Home() {
+    const [continueWatching, setContinueWatching] = useState<CardProps[]>([]);
+    const [highlights, setHighLights] = useState<CardProps[]>([]);
+    const [friendsAreWatching, setFriendsAreWatching] = useState<CardProps[]>([]);
 
     return <Wrapper>
         <Grid>
             <Row>
                 <div>Continue Assistindo</div>
-                <CardsCarroussel cards={[
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                ]} />
+                <CardsCarroussel cards={continueWatching} />
             </Row>
             <Row>
-                <div>Continue Assistindo</div>
-                <CardsCarroussel cards={[
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                ]} />
+                <div>Destaques da Semana</div>
+                <CardsCarroussel cards={highlights} />
             </Row>
             <Row>
-                <div>Continue Assistindo</div>
-                <CardsCarroussel cards={[
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                ]} />
+                <div>Seus Amigos Estão Assistindo</div>
+                <CardsCarroussel cards={friendsAreWatching} />
             </Row>
         </Grid>
     </Wrapper>
