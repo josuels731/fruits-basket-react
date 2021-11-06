@@ -1,4 +1,4 @@
-import { FunctionComponent, SVGProps, useEffect, useRef } from "react";
+import { FunctionComponent, MouseEvent, SVGProps, useEffect, useRef } from "react";
 import { fill, findElement, move, text, Movement } from 'utils/svg'
 import { scaleValue } from "utils/conversions";
 
@@ -25,9 +25,10 @@ interface SvgProps {
     Svg: FunctionComponent<SVGProps<SVGSVGElement>>
     movements: MovementProps[],
     texts: TextProps[],
-    colors: ColorProps[]
+    colors: ColorProps[],
+    onClick?: (e: MouseEvent<SVGSVGElement>) => void
 }
-function Svg({ colors, movements, texts, Svg }: SvgProps) {
+function Svg({ colors, movements, texts, Svg, onClick }: SvgProps) {
     const svgRef = useRef<SVGSVGElement>(null);
 
     useEffect(() => {
@@ -62,7 +63,7 @@ function Svg({ colors, movements, texts, Svg }: SvgProps) {
         })
     })
 
-    return <Svg style={{ width: '100%', height: '100%' }} ref={svgRef} />
+    return <Svg onClick={onClick} style={{ width: '100%', height: '100%' }} ref={svgRef} />
 }
 
 export default Svg;
