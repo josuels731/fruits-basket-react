@@ -1,58 +1,6 @@
 import { TouchEvent, UIEvent as ReactUIEvent, useEffect, useRef, useState, WheelEvent } from "react";
 import styled from "styled-components";
 
-const followingList = [
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-]
-const moviesList = [
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-]
-
 const Wrapper = styled.div`
     width: 100%;
     height: 100%;
@@ -123,6 +71,7 @@ const ProfileData = styled.div`
         border-radius: 50%;
         background-color: black;
         margin: auto;
+        object-fit: contain;
     }
     >:nth-child(2) {
         grid-area: ProfileName;
@@ -177,8 +126,15 @@ const Following = styled.div`
         width: 80%;
         aspect-ratio: 1 / 1;
         border-radius: 50%;
-        background-color: white;
+        background-color: black;
         margin: auto;
+        color: #FFF;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5em;
+        margin-bottom: 0.2em;
+        object-fit: contain;
     }
 `;
 
@@ -201,31 +157,73 @@ const Watched = styled.div`
     }
 `;
 
-const Card = styled.div<{ positionX: number, positionY: number, focus: boolean }>`
+const Card = styled.div<{ positionX: number, positionY: number, focus: boolean, background: string }>`
     width: 17vw;
     aspect-ratio: 16 / 9;
     opacity: ${({ focus }) => focus ? '1' : '0.5'};
     background-color: black;
-    color: #777;
+    background-image: url(${(props) => props.background});
+    background-size: contain;
     border-radius: 0.7em;
     position: absolute;
     top: ${({ positionY }) => positionY * (1 + 17 * (9 / 16))}vw;
     left: ${({ positionX }) => positionX * (17 + 1)}vw;
     transition: top 0.5s ease-out, opacity 0.5s;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    div {
+        font-size: 1.5em;
+        font-weight: 700;
+        color: #FFF;
+        margin: 1vw;
+        background-color: #0000007d;
+        border-radius: 0.25em;
+        padding: 0.25em;
+        text-align: right;
+    }
 `;
 
+interface FollowingState {
+    id: string,
+    image: string
+}
+interface MovieProps {
+    id: string,
+    image: string
+    name: string
+}
+interface ProfileState {
+    id: string,
+    followingList: FollowingState[],
+    moviesList: MovieProps[],
+    name: string,
+    commentsCont: number,
+    watchedCount: number,
+    about: string,
+    image: string
+}
+const DefaultProfile: ProfileState = {
+    id: '',
+    followingList: [],
+    moviesList: [
+        { id: '', image: '', name: '' }
+    ],
+    name: 'Name',
+    about: 'This is me',
+    commentsCont: 0,
+    watchedCount: 0,
+    image: ''
+}
 function Profile() {
-    const [position, setPosition] = useState(Math.floor(moviesList.length / 5) - 1);
+    const [profile, setProfile] = useState<ProfileState>(DefaultProfile)
+    const [position, setPosition] = useState(0);
     const [touchPos, setTouchPos] = useState(0);
-
-    useEffect(() => setPosition(0), [])
-
-
 
     const handleWheel = (e: WheelEvent<HTMLDivElement>) => {
         if (touchPos > 200 || touchPos < -200) {
             setTouchPos(0);
-            if ((position > 0 && e.deltaY < 0) || (position < (Math.floor(moviesList.length / 5) - 1) && e.deltaY > 0))
+            if ((position > 0 && e.deltaY < 0) || (position < (Math.floor(profile.moviesList.length / 5) - 1) && e.deltaY > 0))
                 setPosition(position + (e.deltaY > 0 ? 1 : -1) * 1);
 
         } else {
@@ -236,7 +234,7 @@ function Profile() {
         if (position > 0 && e.changedTouches[0].screenY - touchPos > 100) {
             setPosition(position - 1);
             setTouchPos(e.changedTouches[0].screenY)
-        } else if (position < (Math.floor(moviesList.length / 5) - 1) && e.changedTouches[0].screenY - touchPos < -100) {
+        } else if (position < (Math.floor(profile.moviesList.length / 5) - 1) && e.changedTouches[0].screenY - touchPos < -100) {
             setPosition(position + 1);
             setTouchPos(e.changedTouches[0].screenY)
         }
@@ -247,7 +245,7 @@ function Profile() {
     const handleTouchUp = (e: TouchEvent<HTMLDivElement>) => {
         if (position > 0 && e.changedTouches[0].screenY - touchPos > 50)
             setPosition(position - 1);
-        else if (position < (Math.floor(moviesList.length / 5) - 1) && e.changedTouches[0].screenY - touchPos < -50)
+        else if (position < (Math.floor(profile.moviesList.length / 5) - 1) && e.changedTouches[0].screenY - touchPos < -50)
             setPosition(position + 1);
     }
 
@@ -256,14 +254,11 @@ function Profile() {
             <Background>
                 <Filter>
                     <ProfileData>
-                        <div></div>
-                        <div>Bruno Langer</div>
-                        <div>Avaliações</div>
-                        <div>Assistidos</div>
-                        <div>
-                            <div>Sobre Mim</div>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Est urna a faucibus vitae viverra. Et dolor dis venenatis, blandit elementum. Elementum sapien euismod neque mauris vestibulum neque, volutpat nibh. Diam, id convallis velit sit volutpat quis nibh scelerisque. Malesuada condimentum viverra ut mattis pretium, dolor vel. Quam faucibus in lectus pharetra ullamcorper nulla habitasse. Habitant elementum ultricies.
-                        </div>
+                        <img src={profile.image} />
+                        <div>{profile.name}</div>
+                        <div>Avaliações: {profile.commentsCont}</div>
+                        <div>Assistidos: {profile.watchedCount}</div>
+                        <div><div>Sobre Mim</div>{profile.about}</div>
                     </ProfileData>
                 </Filter>
             </Background>
@@ -271,7 +266,7 @@ function Profile() {
                 <Filter>
                     <Following>
                         <div>Seguindo</div>
-                        {followingList.map((following, index) => index > 11 ? null : <div key={index}> {index === 11 ? '...' : ''}</div>)}
+                        {profile.followingList.map((following, index) => index > 11 ? null : (index === 11 ? <div key={index}>. . .</div> : <img key={index} src={following.image} />))}
                     </Following>
                 </Filter>
             </Background>
@@ -279,14 +274,14 @@ function Profile() {
                 <Watched>
                     <div>Filmes</div>
                     <div onWheel={handleWheel} onTouchStart={handleTouchDown} onTouchEnd={handleTouchUp} onTouchMove={handleTouchMove}>
-                        {moviesList.map((movie, index) =>
+                        {profile.moviesList.map((movie, index) =>
                             <Card
                                 key={index}
+                                background={movie.image}
                                 focus={position === Math.floor(index / 5)}
                                 positionX={index % 5}
                                 positionY={-position + Math.floor(index / 5)}
-                            >
-                            </Card>
+                            ><div>{movie.name}</div></Card>
                         )}
                     </div>
                 </Watched>
