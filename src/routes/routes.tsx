@@ -3,6 +3,7 @@ import Home from "pages/Home";
 import Login from "pages/Login";
 import Header from "components/Header";
 import Profile from "pages/Profile";
+import Movie from "pages/Movie";
 
 interface RouteType {
   path: string;
@@ -24,14 +25,21 @@ const routeList: Array<RouteType> = [
     name: "Home",
     child: <Header><Home /></Header>,
     subRoutes: [],
-    hidden: true
+    hidden: false
   },
-  { // Home
+  { // Profile
     path: "/profile",
     name: "Profile",
     child: <Header><Profile /></Header>,
     subRoutes: [],
-    hidden: true
+    hidden: false
+  },
+  { // Movie
+    path: "/movie",
+    name: "Movie",
+    child: <Header><Movie /></Header>,
+    subRoutes: [],
+    hidden: false
   },
   { // Login
     path: "/login",

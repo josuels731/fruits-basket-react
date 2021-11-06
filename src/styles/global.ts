@@ -24,6 +24,10 @@ const GlobalStyle = createGlobalStyle`
         -moz-osx-font-smoothing: grayscale;
     }
 
+    textarea {
+        font-family: 'Lato', sans-serif;
+    }
+    
     button {
         font-family: 'Lato', sans-serif;
     }
