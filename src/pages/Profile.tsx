@@ -188,7 +188,7 @@ interface FollowingState {
     id: string,
     image: string
 }
-interface MovieProps {
+interface MovieState {
     id: string,
     image: string
     name: string
@@ -196,7 +196,7 @@ interface MovieProps {
 interface ProfileState {
     id: string,
     followingList: FollowingState[],
-    moviesList: MovieProps[],
+    moviesList: MovieState[],
     name: string,
     commentsCont: number,
     watchedCount: number,
