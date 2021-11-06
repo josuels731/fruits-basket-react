@@ -1,6 +1,7 @@
 import Svg from "components/Svg";
 import styled from "styled-components";
 import { ReactComponent as ScoreIcon } from "assets/icons/Score.svg";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 
 const Wrapper = styled.div`
     width: 100%;
@@ -103,10 +104,14 @@ const ProgressHistoricWrapper = styled.div`
     gap: 3em;
     margin-top: 1em;
 `;
-const ProgressHistoric = () => {
+interface ProgressHistoricProps {
+    timestamp: number,
+    percentage: number
+}
+const ProgressHistoric = ({ percentage, timestamp }: ProgressHistoricProps) => {
     return <ProgressHistoricWrapper>
-        <div>12/03/2021 21:32</div>
-        <div>33min</div>
+        <div>{new Date(timestamp).toLocaleString()}</div>
+        <div>{percentage * 100}%</div>
     </ProgressHistoricWrapper>
 }
 const UpdateProgress = styled.div`
@@ -279,19 +284,24 @@ const CommentWrapper = styled.div`
 
 
 `;
-const Comment = () => {
+interface CommentProps {
+    user: string,
+    score: number,
+    comment: string
+}
+const Comment = ({ comment, score, user }: CommentProps) => {
     return <CommentWrapper>
         <div></div>
         <div>
-            <div>Zézinho</div>
+            <div>{user}</div>
             <div>
-                <Svg Svg={ScoreIcon} colors={[{ colors: ['transparent', '#FFF'], idTree: 'Vector', value: 0 }]} movements={[]} texts={[]} />
-                <Svg Svg={ScoreIcon} colors={[{ colors: ['transparent', '#FFF'], idTree: 'Vector', value: 1 }]} movements={[]} texts={[]} />
-                <Svg Svg={ScoreIcon} colors={[{ colors: ['transparent', '#FFF'], idTree: 'Vector', value: 0 }]} movements={[]} texts={[]} />
-                <Svg Svg={ScoreIcon} colors={[{ colors: ['transparent', '#FFF'], idTree: 'Vector', value: 1 }]} movements={[]} texts={[]} />
-                <Svg Svg={ScoreIcon} colors={[{ colors: ['transparent', '#FFF'], idTree: 'Vector', value: 0 }]} movements={[]} texts={[]} />
+                <Svg Svg={ScoreIcon} colors={[{ colors: ['transparent', '#FFF'], idTree: 'Vector', value: Number(score >= 1) }]} movements={[]} texts={[]} />
+                <Svg Svg={ScoreIcon} colors={[{ colors: ['transparent', '#FFF'], idTree: 'Vector', value: Number(score >= 2) }]} movements={[]} texts={[]} />
+                <Svg Svg={ScoreIcon} colors={[{ colors: ['transparent', '#FFF'], idTree: 'Vector', value: Number(score >= 3) }]} movements={[]} texts={[]} />
+                <Svg Svg={ScoreIcon} colors={[{ colors: ['transparent', '#FFF'], idTree: 'Vector', value: Number(score >= 4) }]} movements={[]} texts={[]} />
+                <Svg Svg={ScoreIcon} colors={[{ colors: ['transparent', '#FFF'], idTree: 'Vector', value: Number(score >= 5) }]} movements={[]} texts={[]} />
             </div>
-            <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ultricies morbi blandit vitae lo dolor sit amet, consectetur adipiscing elit. Ultricies morbi blandit vitae lo dolor sit amet, consectetur adipiscing elit. Ultricies morbi blandit vitae lo dolor sit amet, consectetur adipiscing elit. Ultricies morbi blandit vitae lobortis aliquet ullamcorper elementum. Tristique nibh pellentesque tortor, vitae malesuada convallis non. Lectus luctus venenatis dolor, urna phasellus eu cursus ultrices.</div>
+            <div>{comment}</div>
         </div>
     </CommentWrapper>
 }
@@ -380,52 +390,97 @@ const NewCommentArea = styled.div`
         }
     }
 `;
-const NewComment = () => {
+interface NewCommentState {
+    score: number,
+    comment: string
+}
+const DefaultNewComment: NewCommentState = {
+    comment: '',
+    score: 0
+}
+const NewComment = ({ updateCommentList }: { updateCommentList: () => void }) => {
+
+    const [comment, setComment] = useState<NewCommentState>(DefaultNewComment);
+    const textAreaRef = useRef<HTMLTextAreaElement>(null);
+
+    const handleCommentChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+        setComment({ ...comment, comment: e.target.value })
+    }
+
+    const handleClear = () => {
+        setComment(DefaultNewComment);
+        if (textAreaRef.current)
+            textAreaRef.current.value = '';
+    }
+    const handleSend = () => {
+        // TODO Send new Comment
+        handleClear();
+        updateCommentList();
+    }
 
     return <NewCommentArea>
         <div>Avaliar</div>
         <div>
-            <div>Nota:</div>
-            <Svg Svg={ScoreIcon} colors={[{ colors: ['transparent', '#FFF'], idTree: 'Vector', value: 0 }]} movements={[]} texts={[]} />
-            <Svg Svg={ScoreIcon} colors={[{ colors: ['transparent', '#FFF'], idTree: 'Vector', value: 1 }]} movements={[]} texts={[]} />
-            <Svg Svg={ScoreIcon} colors={[{ colors: ['transparent', '#FFF'], idTree: 'Vector', value: 0 }]} movements={[]} texts={[]} />
-            <Svg Svg={ScoreIcon} colors={[{ colors: ['transparent', '#FFF'], idTree: 'Vector', value: 1 }]} movements={[]} texts={[]} />
-            <Svg Svg={ScoreIcon} colors={[{ colors: ['transparent', '#FFF'], idTree: 'Vector', value: 0 }]} movements={[]} texts={[]} />
+            <div onClick={() => setComment({ ...comment, score: 0 })}>Nota:</div>
+            <Svg onClick={() => setComment({ ...comment, score: 1 })} Svg={ScoreIcon} colors={[{ colors: ['transparent', '#FFF'], idTree: 'Vector', value: Number(comment.score >= 1) }]} movements={[]} texts={[]} />
+            <Svg onClick={() => setComment({ ...comment, score: 2 })} Svg={ScoreIcon} colors={[{ colors: ['transparent', '#FFF'], idTree: 'Vector', value: Number(comment.score >= 2) }]} movements={[]} texts={[]} />
+            <Svg onClick={() => setComment({ ...comment, score: 3 })} Svg={ScoreIcon} colors={[{ colors: ['transparent', '#FFF'], idTree: 'Vector', value: Number(comment.score >= 3) }]} movements={[]} texts={[]} />
+            <Svg onClick={() => setComment({ ...comment, score: 4 })} Svg={ScoreIcon} colors={[{ colors: ['transparent', '#FFF'], idTree: 'Vector', value: Number(comment.score >= 4) }]} movements={[]} texts={[]} />
+            <Svg onClick={() => setComment({ ...comment, score: 5 })} Svg={ScoreIcon} colors={[{ colors: ['transparent', '#FFF'], idTree: 'Vector', value: Number(comment.score >= 5) }]} movements={[]} texts={[]} />
         </div>
         <div>Comentario:</div>
-        <textarea></textarea>
+        <textarea ref={textAreaRef} onChange={handleCommentChange}></textarea>
         <div>
-            <div>Descartar</div>
-            <div>Enviar</div>
+            <div onClick={handleClear}>Descartar</div>
+            <div onClick={handleSend}>Enviar</div>
         </div>
     </NewCommentArea>
 }
 
+interface MovieState {
+    title: string,
+    description: string,
+    year: number,
+    gender: string,
+    progress: number,
+    progressHistoric: ProgressHistoricProps[],
+    image: string,
+    comments: CommentProps[],
+}
+const DefaultMovie: MovieState = {
+    title: 'Title',
+    description: 'Description',
+    year: 1900,
+    gender: 'Gender not Informed',
+    progress: 0,
+    progressHistoric: [],
+    image: '',
+    comments: []
+}
 function Movie() {
+
+    const [movie, setMovie] = useState<MovieState>(DefaultMovie)
+
+    const updateMovie = () => {
+        // TODO get movie data
+    }
+
+    useEffect(updateMovie, []);
 
     return <Wrapper>
         <Grid>
             <Background>
                 <Filter>
                     <MovieData>
-                        <div></div>
-                        <div>MovieTitle</div>
-                        <div><strong>2021</strong> MovieData</div>
-                        <div>When Thor's evil brother, Loki (Tom Hiddleston), gains access to the unlimited power of the energy cube called the Tesseract, Nick Fury (Samuel L. Jackson), director of S.H.I.E.L.D., initiates a superhero recruitment effort to defeat the unprecedented threat to Earth. Joining Fury's "dream team" are Iron Man (Robert Downey Jr.), Captain America (Chris Evans), the Hulk (Mark Ruffalo), Thor (Chris Hemsworth), the Black Widow (Scarlett Johansson) and Hawkeye (Jeremy Renner).</div>
-                        <div>ProgressTitle</div>
-                        <div><ProgressBar percentage={50} /></div>
-                        <div>
-                            <ProgressHistoric />
-                            <ProgressHistoric />
-                            <ProgressHistoric />
-                            <ProgressHistoric />
-                            <ProgressHistoric />
-                            <ProgressHistoric />
-                            <ProgressHistoric />
-                        </div>
-                        <div>
-                            <UpdateProgress>Atualizar Progresso</UpdateProgress>
-                        </div>
+                        <img src='' />
+                        <div>{movie.title}</div>
+                        <div><strong>{movie.year}</strong> - {movie.gender}</div>
+                        <div>{movie.description}</div>
+                        <div>Progresso</div>
+                        <div><ProgressBar percentage={movie.progress} /></div>
+                        <div>{movie.progressHistoric.map((progress, index) => <ProgressHistoric key={index} {...progress} />)}</div>
+                        {/* TODO Update Progress Popup */}
+                        <div><UpdateProgress>Atualizar Progresso</UpdateProgress></div>
                         <div />
                     </MovieData>
                 </Filter>
@@ -434,21 +489,13 @@ function Movie() {
                 <Filter>
                     <CommentsArea>
                         <div>Comentários</div>
-                        <div>
-                            <Comment />
-                            <Comment />
-                            <Comment />
-                            <Comment />
-                            <Comment />
-                            <Comment />
-                            <Comment />
-                        </div>
+                        <div>{movie.comments.map(comment => <Comment {...comment} />)}</div>
                     </CommentsArea>
                 </Filter>
             </Background>
             <Background>
                 <Filter>
-                    <NewComment />
+                    <NewComment updateCommentList={updateMovie} />
                 </Filter>
             </Background>
         </Grid>
