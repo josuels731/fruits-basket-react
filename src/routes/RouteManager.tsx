@@ -1,11 +1,21 @@
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { ReactNode } from "react";
+import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom";
+import { useLoginContext } from "services/loginContext";
 import { routeList } from './routes'
 
+const CheckPrivateRoute = ({ children, protectedRoute }: { children: ReactNode, protectedRoute: boolean }) => {
+  const { loginStatus } = useLoginContext()
+
+  if (protectedRoute && !loginStatus.token)
+    return <Redirect to='/login' />
+
+  return <>{children}</>
+}
 const renderList = routeList.map(
-  ({ path, child, subRoutes }, index) => {
+  ({ path, child, subRoutes, protectedRoute }, index) => {
     const routes = [
       <Route key={index} exact path={path}>
-        {child}
+        <CheckPrivateRoute protectedRoute={protectedRoute} children={child} />
       </Route>,
     ];
 
@@ -16,7 +26,7 @@ const renderList = routeList.map(
           exact
           path={`${path}${subRoute.path}`}
         >
-          {subRoute.child}
+          <CheckPrivateRoute protectedRoute={subRoute.protectedRoute} children={subRoute.child} />
         </Route>
       );
     });

@@ -4,6 +4,8 @@ import { login } from 'services/users';
 import { RequestPostLogin, ResponsePostLogin } from 'services/users.d';
 import LoginBackground from 'assets/img/LoginBackground.png'
 import { ReactComponent as DefaultIcon } from 'assets/icons/DefaultIcon.svg'
+import { Redirect } from "react-router";
+import { useLoginContext } from "../services/loginContext";
 
 const Page = styled.div`
     width: 100vw;
@@ -101,7 +103,7 @@ const Error = styled.div`
 function Login() {
 
     const [loginData, setLoginData] = useState<RequestPostLogin>({ email: '', password: '' });
-    const [loginStatus, setLoginStatus] = useState<ResponsePostLogin>({});
+    const { loginStatus, setLoginStatus } = useLoginContext();
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -127,6 +129,7 @@ function Login() {
                 <Input id='password' onInvalid={handleInvalid} onChange={handleChange} type="password" placeholder='senha' />
                 <Error>{loginStatus.error || ''}</Error>
                 <Button type="submit">login</Button>
+                {loginStatus.token !== undefined ? <Redirect to='/' /> : null}
             </Filter>
         </DesktopForm>
     </Page>

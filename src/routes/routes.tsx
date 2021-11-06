@@ -10,13 +10,15 @@ interface RouteType {
   name: string;
   child: ReactNode;
   subRoutes: Array<SubrouteType>;
-  hidden?: boolean;
+  hidden: boolean;
+  protectedRoute: boolean;
 }
 interface SubrouteType {
   path: string;
   name: string;
   child: ReactNode;
-  hidden?: boolean;
+  hidden: boolean;
+  protectedRoute: boolean;
 }
 
 const routeList: Array<RouteType> = [
@@ -25,28 +27,32 @@ const routeList: Array<RouteType> = [
     name: "Home",
     child: <Header><Home /></Header>,
     subRoutes: [],
-    hidden: false
+    hidden: false,
+    protectedRoute: true
   },
   { // Profile
     path: "/profile",
     name: "Profile",
     child: <Header><Profile /></Header>,
     subRoutes: [],
-    hidden: false
+    hidden: false,
+    protectedRoute: true
   },
   { // Movie
     path: "/movie",
     name: "Movie",
     child: <Header><Movie /></Header>,
     subRoutes: [],
-    hidden: false
+    hidden: false,
+    protectedRoute: true
   },
   { // Login
     path: "/login",
     name: "Login",
     child: <Login />,
     subRoutes: [],
-    hidden: true
+    hidden: true,
+    protectedRoute: false
   }
 ];
 
