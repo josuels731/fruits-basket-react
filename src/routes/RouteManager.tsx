@@ -6,8 +6,8 @@ import { routeList } from './routes'
 const CheckPrivateRoute = ({ children, protectedRoute }: { children: ReactNode, protectedRoute: boolean }) => {
   const { loginStatus } = useLoginContext()
 
-  if (protectedRoute && !loginStatus.token)
-    return <Redirect to='/login' />
+  // if (protectedRoute && !loginStatus.token)
+  // return <Redirect to='/login' />
 
   return <>{children}</>
 }
