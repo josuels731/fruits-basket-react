@@ -1,12 +1,12 @@
 import axios from 'axios'
 import { RequestPostLogin, ResponsePostLogin } from './users.d'
 const backend = axios.create({
-    baseURL: 'http://localhost/users'
+    baseURL: 'http://192.168.137.1'
 });
 
 const login = async (data: RequestPostLogin): Promise<ResponsePostLogin> => {
     try {
-        const req = await backend.post<ResponsePostLogin>('/login',
+        const req = await backend.post<ResponsePostLogin>('users/login',
             data,
             {}
         )
@@ -17,4 +17,4 @@ const login = async (data: RequestPostLogin): Promise<ResponsePostLogin> => {
     }
 }
 
-export { login }
+export { login, backend }
